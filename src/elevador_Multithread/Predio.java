@@ -1,10 +1,63 @@
 package elevador_Multithread;
 
-public class Predio {
+import java.awt.Graphics;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Janela();
+import javax.swing.JPanel;
+
+public class Predio extends JPanel{
+
+	Andares[] andares;
+	Elevador elevador;
+	Passageiros[] passageiros;
+
+	public Predio(int numAndares) {
+		andares = new Andares[numAndares];
+		for(int i = 0; i < andares.length; i++) {
+			andares[i] = new Andares(i + 50 + (i*5), this);
+		}
+		elevador = new Elevador(andares, this);
+	}
+	
+	public Andares[] getAndares() {
+		return andares;
+	}
+	
+	public int getAltura() {
+		return(andares.length + 1) * andares[0].getAltura();
+	}
+	
+	public Elevador getElevador() {
+		return elevador;
+	}
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		for(int i = 0; i < andares.length; i++) {
+			andares[i].draw(g);
+		}
+		
+		elevador.draw(g);
+		
+		for(int i = 0; i < andares.length; i++) {
+			for(int j = 0; j < andares[i].getPassageiro().length ; j++) {
+				andares[i].getPassageiro()[j].draw(g);
+			}
+		}
+		
+	}
+	
+	public void Redesenhar() {
+		this.revalidate();
+		this.repaint();
 	}
 
+	public void start() {
+		andares[0].getPassageiro()[0].start();
+		elevador.Visitar_andar(andares[0].getPassageiro()[0].setAndar());
+		loop();
+	}
+	
+	public void loop() {
+		
+	}
 }
