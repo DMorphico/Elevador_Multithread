@@ -48,9 +48,13 @@ public class Passageiros {
 	
 	
 	public void moverY(int y) {
-		System.out.println(y);
-		this.posY = y;
-		predio.Redesenhar();
+		
+		if(posY < y) {
+			while(posY < y) {
+				posY++;
+				predio.Redesenhar();	
+			}
+		}
 		moverX(-20);
 	}
 	

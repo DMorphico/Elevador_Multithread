@@ -52,8 +52,8 @@ public class Predio extends JPanel{
 	}
 
 	public void start() {
-		andares[0].getPassageiro()[0].start();
-		elevador.Visitar_andar(andares[0].getPassageiro()[0].setAndar());
+		andares[elevador.getAndarIndex()].getPassageiro()[0].start();
+		elevador.Visitar_andar(andares[elevador.getAndarIndex()].getPassageiro()[0].setAndar());
 		loop();
 	}
 	

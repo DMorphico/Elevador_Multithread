@@ -12,6 +12,7 @@ public class Elevador extends Thread{
 	Predio predio;
 	ImageIcon sprite;
 	Andares[] andares;
+	Andares andarInicial;
 	private Semaphore semaforo;
 	
 	
@@ -20,7 +21,7 @@ public class Elevador extends Thread{
 		this.andares = andares;
 		this.predio = predio;
 		sprite = new ImageIcon("Imagens/Elevador.png");
-		posY = andares[0].getPosY() - 25;
+		posY = andarInicial().getPosY() - 25;
 	}
 	
 	public void Abrirporta() {
@@ -30,11 +31,13 @@ public class Elevador extends Thread{
 		
 	}	
 	public void Visitar_andar(Andares andarDesejado) {
-		System.out.println(andarDesejado.getPosY());
-		while(posY < andarDesejado.getPosY()-25) {
-			posY++;
+		int andarIndex = getAndarIndex();
+		if (andarIndex >= 0) {
+			while(posY < andarDesejado.getPosY()-25) {
+				posY++;
+			}
+		    andares[andarIndex].getPassageiro()[0].moverY(posY);
 		}
-		andares[0].getPassageiro()[0].moverY(posY);
 		System.out.println(posY);
 		this.predio.Redesenhar();
 	}
@@ -47,8 +50,24 @@ public class Elevador extends Thread{
 		return andares[andar];
 	}
 	
-	private void andarInicial() {
-		
+	private Andares andarInicial() {
+		for(Andares andares : this.andares) {
+			if(andares.getPassageiro().length != 0) {
+				return andares;
+			}
+		}
+		return null;
+	}
+	
+	public int getAndarIndex() {
+	    int elevadorPosY = predio.getElevador().posY;
+	    
+	    for (int i = 0; i < andares.length; i++) {
+	        if (elevadorPosY == andares[i].getPosY() - 25) {
+	            return i; 
+	        }
+	    }
+	    return -1;
 	}
 	
 	public void draw(Graphics g) {
