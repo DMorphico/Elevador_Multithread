@@ -2,6 +2,7 @@ package elevador_Multithread;
 
 import java.awt.Graphics;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -13,7 +14,7 @@ public class Andares extends JPanel{
 	Predio predio;
 	Passageiros[] passageiros;
 	
-	public Andares(int _posY, Predio _predio) {
+	public Andares(int _posY, Predio _predio, Semaphore _semaphore) {
 		this.posY = _posY;
 		sprite = new ImageIcon("Imagens/Floor.png");
 		this.predio = _predio;
@@ -23,7 +24,7 @@ public class Andares extends JPanel{
 		numPassageiro = random.nextInt(6);
 		passageiros = new Passageiros[numPassageiro];
 		for(int i = 0; i < passageiros.length; i++) {
-			passageiros[i] = new Passageiros(predio, this, 145 - (i*20));
+			passageiros[i] = new Passageiros(predio, this, 145 - (i*20), _semaphore);
 			}
 	}
 	

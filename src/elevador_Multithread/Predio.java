@@ -1,6 +1,7 @@
 package elevador_Multithread;
 
 import java.awt.Graphics;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.JPanel;
 
@@ -9,13 +10,15 @@ public class Predio extends JPanel{
 	Andares[] andares;
 	Elevador elevador;
 	Passageiros[] passageiros;
+	Semaphore semaphore;
 
 	public Predio(int numAndares) {
+		semaphore = new Semaphore(1);
 		andares = new Andares[numAndares];
 		for(int i = 0; i < andares.length; i++) {
-			andares[i] = new Andares(i + 50 + (i*5), this);
+			andares[i] = new Andares(i + 50 + (i*5), this, semaphore);
 		}
-		elevador = new Elevador(andares, this);
+		elevador = new Elevador(andares, this, semaphore);
 	}
 	
 	public Andares[] getAndares() {

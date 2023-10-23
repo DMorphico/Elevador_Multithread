@@ -16,8 +16,8 @@ public class Elevador extends Thread{
 	private Semaphore semaforo;
 	
 	
-	public Elevador (Andares[] andares, Predio predio) {
-		semaforo = new Semaphore(1);
+	public Elevador (Andares[] andares, Predio predio, Semaphore _semaforo) {
+		semaforo = _semaforo;
 		this.andares = andares;
 		this.predio = predio;
 		sprite = new ImageIcon("Imagens/Elevador.png");
@@ -25,8 +25,18 @@ public class Elevador extends Thread{
 	}
 	
 	public void Abrirporta() {
+		try {
+			semaforo.acquire();
+			
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		semaforo.release();
 	}
+	
 	public void Fecharporta(Passageiros[] andar) {
 		
 	}	

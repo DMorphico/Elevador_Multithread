@@ -2,23 +2,30 @@ package elevador_Multithread;
 
 import java.awt.Graphics;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
-public class Passageiros {
+public class Passageiros extends Thread{
 	Andares andarInicial, andarDesejado;
 	int posX, posY;
 	boolean estado;
 	ImageIcon sprite;
 	Predio predio;
 	Random r = new Random();
+	Semaphore semaphore;
 	
-	public Passageiros(Predio _predio, Andares _andarInicial, int posX){
+	public Passageiros(Predio _predio, Andares _andarInicial, int posX, Semaphore _semaphore){
 		sprite = new ImageIcon("Imagens/Trabalhador.png");
 		this.predio = _predio;
 		this.andarInicial = _andarInicial;
 		this.posX = posX;
 		this.posY = andarInicial.getPosY() - 15;
+		this.semaphore = _semaphore;
+	}
+
+	public void run() {
+		
 	}
 	
 	public Andares setAndar() {
