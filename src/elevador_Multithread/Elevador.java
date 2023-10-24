@@ -12,9 +12,10 @@ public class Elevador extends Thread{
 	Predio predio;
 	ImageIcon sprite;
 	Andares[] andares;
-	Andares andarInicial;
+	Andares andarAtual, andarDesejado;
 	private Semaphore semaforo;
-	
+	boolean portaAberta = false;
+	//int andarIndex = getAndarIndex();
 	
 	public Elevador (Andares[] andares, Predio predio, Semaphore _semaforo) {
 		semaforo = _semaforo;
@@ -22,43 +23,58 @@ public class Elevador extends Thread{
 		this.predio = predio;
 		sprite = new ImageIcon("Imagens/Elevador.png");
 		posY = andarInicial().getPosY() - 25;
+		andarAtual = andarInicial();
+		
+	}
+	public void run() {
+		while(true) {
+			VisitarAndar(andarDesejado);
+
+		}
 	}
 	
-	public void Abrirporta() {
+	private void esperar() {
 		try {
-			semaforo.acquire();
-			
-			
+			Thread.sleep(10);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		semaforo.release();
 	}
 	
-	public void Fecharporta(Passageiros[] andar) {
-		
+	public void Abrirporta() {
+		portaAberta = true;
+	}
+	
+	public void Fecharporta() {
+		portaAberta = false;
 	}	
-	public void Visitar_andar(Andares andarDesejado) {
-		int andarIndex = getAndarIndex();
-		if (andarIndex >= 0) {
-			while(posY < andarDesejado.getPosY()-25) {
-				posY++;
-			}
-		    andares[andarIndex].getPassageiro()[0].moverY(posY);
-		}
-		System.out.println(posY);
-		this.predio.Redesenhar();
+	
+	public void VisitarAndar(Andares _andarDesejado) {
+	    while(posY != _andarDesejado.getPosY() - 25) {
+	    	if(_andarDesejado.getPosY()- 25 > posY) {
+	    		posY++;
+	    	}else {
+	    		posY--;
+	    	}
+	    }
+	    
+	    esperar();
+	    andarDesejado = _andarDesejado;
+	}
+	
+	public void setAndar(Andares andares) {
+		this.andarDesejado = andares;
 	}
 	
 	public int getPosX() {
 		return posX;
 	}
 	
-	public Andares setAndar(int andar){
-		return andares[andar];
+	public int getPosY() {
+		return posY;
 	}
+	
 	
 	private Andares andarInicial() {
 		for(Andares andares : this.andares) {
@@ -82,6 +98,9 @@ public class Elevador extends Thread{
 	
 	public void draw(Graphics g) {
 		sprite.paintIcon(predio, g, posX, posY);
+	}
+	public boolean isPortaAberta() {
+		return portaAberta;
 	}
 }
 

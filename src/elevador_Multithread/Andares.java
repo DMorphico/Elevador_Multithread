@@ -24,7 +24,7 @@ public class Andares extends JPanel{
 		numPassageiro = random.nextInt(6);
 		passageiros = new Passageiros[numPassageiro];
 		for(int i = 0; i < passageiros.length; i++) {
-			passageiros[i] = new Passageiros(predio, this, 145 - (i*20), _semaphore);
+			passageiros[i] = new Passageiros(predio, this, 145 - (i*20), _semaphore, i);
 			}
 	}
 	
@@ -46,5 +46,18 @@ public class Andares extends JPanel{
 	
 	public void draw(Graphics g) {
 		sprite.paintIcon(predio, g, 0, posY);
+	}
+
+	public void removePassageiro(Passageiros[] arrayPassageiros) {
+	    if(arrayPassageiros.length > 0) {
+	    	int novoTamanhoDoArray = arrayPassageiros.length - 1;
+	    	Passageiros[] novoArray = new Passageiros[novoTamanhoDoArray];
+	    	
+	    	for(int i = 1; i < arrayPassageiros.length; i++) {
+	    		novoArray[i - 1] = arrayPassageiros[i];
+	    	}
+	    	
+	    	arrayPassageiros = novoArray;
+	    }
 	}
 }
