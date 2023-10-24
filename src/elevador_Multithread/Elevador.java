@@ -27,10 +27,7 @@ public class Elevador extends Thread{
 		
 	}
 	public void run() {
-		while(true) {
-			VisitarAndar(andarDesejado);
 
-		}
 	}
 	
 	private void esperar() {
@@ -50,11 +47,19 @@ public class Elevador extends Thread{
 		portaAberta = false;
 	}	
 	
-	public void VisitarAndar(Andares _andarDesejado) {
+	public void VisitarAndar(Andares _andarDesejado, Passageiros passageiro) {
 	    while(posY != _andarDesejado.getPosY() - 25) {
 	    	if(_andarDesejado.getPosY()- 25 > posY) {
+	    		esperar();
+	    		predio.Redesenhar();
+	    		if(this.portaAberta == true)
+	    			passageiro.posY++;
 	    		posY++;
 	    	}else {
+	    		esperar();
+	    		predio.Redesenhar();
+	    		if(this.portaAberta == true)
+	    			passageiro.posY--;
 	    		posY--;
 	    	}
 	    }

@@ -40,7 +40,7 @@ public class Passageiros extends Thread{
 				esperar(1000);
 				entrarElevador();
 				esperar(1000);
-				predio.getElevador().VisitarAndar(this.andarDesejado);
+				predio.getElevador().VisitarAndar(this.andarDesejado, this);
 				moverY();
 				sairElevador();
 				esperar(1000);
@@ -78,7 +78,7 @@ public class Passageiros extends Thread{
 	private void chamarElevador() {
 		try {
 			semaphore.acquire();
-			predio.getElevador().VisitarAndar(andarAtual);
+			predio.getElevador().VisitarAndar(andarAtual, this);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +86,7 @@ public class Passageiros extends Thread{
 	}
 	
 	private void entrarElevador() {
+		predio.getElevador().Abrirporta();
 		moverX(predio.getElevador().getPosX() + 5);
 	}
 
@@ -127,6 +128,7 @@ public class Passageiros extends Thread{
 			this.posX--;
 		}
 		semaphore.release();
+		predio.getElevador().Fecharporta();
 		ativo = false;
 	}
 	
